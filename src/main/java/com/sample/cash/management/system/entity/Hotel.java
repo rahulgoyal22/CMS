@@ -1,21 +1,9 @@
 package com.sample.cash.management.system.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -39,10 +27,7 @@ public class Hotel extends AbstractEntity{
     @Column(name = "password", nullable = false)
     private String password;
 
-//    @Override
-//    public String toString() {
-//        return "Hotel [id=" + id + ", managerId=" + managerId + ", emailAddress=" +
-//    emailAddress + ", password=" + password
-//       + "]";
-//    }
+    @ManyToOne(targetEntity = Users.class)
+    @JoinColumn(name = "users_id")
+    private Users user;
 }
