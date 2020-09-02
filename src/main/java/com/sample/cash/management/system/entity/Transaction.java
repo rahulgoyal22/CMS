@@ -5,9 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+
+
 @Data
 @Entity
 @Builder
@@ -15,13 +16,20 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 
+
 public class Transaction extends AbstractEntity{
 
-    @Column(name = "hotel_id",nullable = false)
-    private String hotelId;
+    public enum transactionTypes {
+
+        debit,credit;
+    }
+
+    @ManyToOne(targetEntity = Hotel.class)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
 
     @Column(name= "type_of_transaction",nullable = false)
-    private String transaction;
+    private transactionTypes transaction;
 
     @Column(name = "amount",nullable = false)
     private Integer amount;

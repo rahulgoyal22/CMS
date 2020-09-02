@@ -30,4 +30,15 @@ public class Hotel extends AbstractEntity{
     @ManyToOne(targetEntity = Users.class)
     @JoinColumn(name = "users_id")
     private Users user;
+
+    @Column( name = "balance", nullable = false)
+    private Long balance;
+
+    public Hotel(String managerId, String emailAddress, String password, Users user) {
+        this.managerId = managerId;
+        this.emailAddress = emailAddress;
+        this.password = password;
+        this.user = user;
+        this.balance = Long.valueOf(0);
+    }
 }
