@@ -1,9 +1,7 @@
 package com.sample.cash.management.system.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,15 +10,18 @@ import javax.persistence.Table;
 
 enum userTypes {
 
-    manager,customer;
+    collector,approver;
 }
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@JsonInclude
 public class Users extends AbstractEntity{
 
     @Column(name = "type_of_user", nullable = false)
@@ -29,9 +30,10 @@ public class Users extends AbstractEntity{
     @Column(name = "name_of_user", nullable = false)
     private String nameOfUser;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email",nullable = false)
     private String email;
 
-    @Column(name = "password", unique = true)
+    @Column(name = "password", nullable = false)
     private String password;
+
 }
