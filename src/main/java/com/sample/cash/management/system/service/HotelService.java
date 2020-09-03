@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.sample.cash.management.system.entity.Transaction;
+import com.sample.cash.management.system.model.HotelDto;
+import com.sample.cash.management.system.model.HotelUpdateDto;
 import com.sample.cash.management.system.repository.TransactionRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -32,21 +35,45 @@ public class HotelService {
 		return hotelRepository.save(hotel);
 	}
 
-	public Hotel getHotel(Long id) {
+	public HotelDto getHotel(Long id) {
 		Optional<Hotel> hotel = hotelRepository.findById(id);
-		if (hotel.isPresent()) 
+		if (hotel.isPresent())
 		{
-		    return hotel.get();
-		} 
+			ModelMapper modelMapper= new ModelMapper();
+			HotelDto hotelDto=modelMapper.map(hotel.get(),HotelDto.class);
+			return hotelDto;
+
+		}
 		else
 		{
 		    return null;
-		}	
+		}
 	}
 
-	public Hotel updateHotel(Hotel hotel)
+	public HotelDto updateHotel(HotelUpdateDto hotelUpdateDto,Long id)
 	{
-		return hotelRepository.save(hotel);
+
+
+		Optional<Hotel> hotel = hotelRepository.findById(id);
+		if (hotel.isPresent())
+		{
+			Hotel h=hotel.get();
+			if(!hotelUpdateDto.getEmailAddress().isEmpty()){
+			h.setEmailAddress(hotelUpdateDto.getEmailAddress());}
+			if(!hotelUpdateDto.getPassword().isEmpty())
+			{
+				h.setPassword(hotelUpdateDto.getPassword());
+			}
+            ModelMapper modelMapper=new ModelMapper();
+			HotelDto hotelDto=modelMapper.map(h,HotelDto.class);
+			hotelRepository.save(h);
+			return hotelDto;
+		}
+		else
+		{
+			return null;
+		}
+//		return hotelRepository.save(hotel);
 	}
 
 	public List<Transaction> getAllTransactions(Long id){

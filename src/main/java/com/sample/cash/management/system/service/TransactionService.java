@@ -3,6 +3,7 @@ package com.sample.cash.management.system.service;
 import com.sample.cash.management.system.entity.Hotel;
 import com.sample.cash.management.system.entity.Transaction;
 import com.sample.cash.management.system.entity.Users;
+import com.sample.cash.management.system.repository.HotelRepository;
 import com.sample.cash.management.system.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,27 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
+    @Autowired
     private HotelService hotelService;
+    @Autowired
+    private HotelRepository hotelRepository;
 
-    public Transaction addTransaction(Transaction transaction) {
-        return transactionRepository.save(transaction);
+    public Transaction addTransaction(Transaction transaction, Long hotelId) {
+
+        Optional<Hotel> h = hotelRepository.findById(hotelId);
+
+        if (h.isPresent()) {
+            Hotel hotel = h.get();
+            transaction.setHotel(hotel);
+            Long temp = transaction.getAmount().longValue();
+            if (transaction.getTransaction() == Transaction.transactionTypes.debit) {
+                temp = 0 - temp;
+            }
+            hotel.setBalance(hotel.getBalance() + temp);
+            return transactionRepository.save(transaction);
+        } else {
+            return null;
+        }
     }
 
     public List<Transaction> getAllTransaction() {
