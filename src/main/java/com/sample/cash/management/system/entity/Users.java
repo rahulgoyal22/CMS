@@ -8,10 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 
-enum userTypes {
 
-    collector,approver;
-}
 
 @Getter
 @Setter
@@ -23,6 +20,11 @@ enum userTypes {
 @ToString
 @JsonInclude
 public class Users extends AbstractEntity{
+
+    public enum userTypes {
+
+        collector,approver;
+    }
 
     @Column(name = "type_of_user", nullable = false)
     private userTypes typeOfUser;

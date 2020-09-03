@@ -41,4 +41,9 @@ public class UsersController {
             return null;
         }
     }
+
+    @RequestMapping("/hotelcollectors")
+    public List<Users> listHotelCollectors (){
+        return usersService.listHotelCollectors();
+    }
 }

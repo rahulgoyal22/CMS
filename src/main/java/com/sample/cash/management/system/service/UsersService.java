@@ -43,4 +43,8 @@ public class UsersService {
         return usersRepository.save(user);
     }
 
+    public List<Users> listHotelCollectors(){
+       return  usersRepository.findAllByTypeOfUser(Users.userTypes.collector);
+    }
+
 }
