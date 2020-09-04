@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MappingRepository extends JpaRepository<Mapping,String> {
+public interface MappingRepository extends JpaRepository<Mapping,Long> {
+
+    public Mapping findByCollectorId(Long collectorId);
 }

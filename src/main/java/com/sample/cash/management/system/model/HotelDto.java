@@ -13,6 +13,6 @@ public class HotelDto {
     private Long id;
     private String managerId;
     private String emailAddress;
-    private Long balance;
+    private double balance;
 
 }

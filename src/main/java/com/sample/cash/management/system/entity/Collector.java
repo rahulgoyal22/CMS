@@ -26,7 +26,7 @@ public class Collector extends AbstractEntity{
 
 
     @Column(name = "amount", nullable = false)
-    private Long amount;
+    private double amount;
 
     @Column(name = "approved", nullable = false)
     private Boolean approved;
