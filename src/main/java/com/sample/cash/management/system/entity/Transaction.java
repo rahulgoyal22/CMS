@@ -1,5 +1,6 @@
 package com.sample.cash.management.system.entity;
 
+import com.sample.cash.management.system.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,17 +20,13 @@ import javax.persistence.*;
 
 public class Transaction extends AbstractEntity{
 
-    public enum transactionTypes {
-
-        debit,credit;
-    }
 
     @ManyToOne(targetEntity = Hotel.class)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
     @Column(name= "type_of_transaction",nullable = false)
-    private transactionTypes transaction;
+    private TransactionType transaction;
 
     @Column(name = "amount",nullable = false)
     private Integer amount;
