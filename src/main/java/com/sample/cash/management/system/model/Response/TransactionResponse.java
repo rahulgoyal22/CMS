@@ -16,5 +16,5 @@ import lombok.experimental.SuperBuilder;
 public class TransactionResponse {
     private String managerId;
     private TransactionType transaction;
-    private Integer amount;
+    private double amount;
 }

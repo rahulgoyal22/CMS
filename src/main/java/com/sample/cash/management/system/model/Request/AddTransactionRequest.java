@@ -13,5 +13,5 @@ import lombok.ToString;
 @AllArgsConstructor
 public class AddTransactionRequest {
     private TransactionType transaction;
-    private Integer amount;
+    private double amount;
 }

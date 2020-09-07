@@ -29,6 +29,6 @@ public class Transaction extends AbstractEntity{
     private TransactionType transaction;
 
     @Column(name = "amount",nullable = false)
-    private Integer amount;
+    private double amount;
 
 }

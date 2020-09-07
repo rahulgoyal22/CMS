@@ -16,5 +16,5 @@ public class HotelResponse {
     private String managerId;
     private String emailAddress;
    // private String password;
-    private Long balance;
+    private double balance;
 }
