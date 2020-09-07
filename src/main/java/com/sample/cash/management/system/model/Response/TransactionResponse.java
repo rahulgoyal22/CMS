@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransactionResponse {
-    private Hotel hotel;
+    private String managerId;
     private TransactionType transaction;
     private Integer amount;
 }

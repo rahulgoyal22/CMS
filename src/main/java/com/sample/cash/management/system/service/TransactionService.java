@@ -16,9 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.sample.cash.management.system.constant.Constants.NO_SUCH_HOTEL;
@@ -47,21 +45,28 @@ public class TransactionService {
                 temp = 0 - temp;
             }
             hotel.setBalance(hotel.getBalance() + temp);
-            transactionRepository.save(Transaction.builder().transaction(addTransactionRequest.getTransaction()).amount(addTransactionRequest.getAmount()).build());
+            hotelRepository.save(hotel);
+            transactionRepository.save(Transaction.builder().transaction(addTransactionRequest.getTransaction()).amount(addTransactionRequest.getAmount()).hotel(hotel).build());
             return ServiceResponse.builder().status(Status.Success).build();
         } else {
-            return null;
+            return ServiceResponse.builder().status(Status.Failure).build();
         }
     }
 
-//    public List<Transaction> getAllTransaction() {
-//        return transactionRepository.findAll();
-//    }
+
 
 
     public List<TransactionResponse> getAllTransaction(){
         List<Transaction> transactions = transactionRepository.findAll();
-        List<TransactionResponse> transactionResponses= transactions.stream().map(transaction -> modelMapper.map(transaction,TransactionResponse.class)).collect(Collectors.toList());
+
+        List<TransactionResponse> transactionResponses= new ArrayList<>();
+        transactions.forEach(transaction ->{
+            TransactionResponse mapping = new TransactionResponse();
+            mapping.setTransaction(transaction.getTransaction());
+            mapping.setAmount(transaction.getAmount());
+            mapping.setManagerId(transaction.getHotel().getManagerId());
+            transactionResponses.add(mapping);
+        });
         return transactionResponses;
     }
 
@@ -73,12 +78,45 @@ public class TransactionService {
             throw new UnprocessableEntity(NO_SUCH_TRANSACTION);
         }
         else {
-           // ModelMapper modelMapper= new ModelMapper();
+
             TransactionResponse transactionResponse=modelMapper.map(transaction.get(),TransactionResponse.class);
+            transactionResponse.setManagerId(transaction.get().getHotel().getManagerId());
+
             return transactionResponse;
 
         }
 
     }
 
+
+    public List<TransactionResponse> getdailytransaction(Date start, Date end, Long id){
+        List<Transaction> transactions= transactionRepository.findAllByCreatedAtBetweenAndHotelId(start,end,id);
+
+        List<TransactionResponse> transactionResponses= new ArrayList<>();
+        transactions.forEach(transaction ->{
+            TransactionResponse mapping = new TransactionResponse();
+            mapping.setTransaction(transaction.getTransaction());
+            mapping.setAmount(transaction.getAmount());
+            mapping.setManagerId(transaction.getHotel().getManagerId());
+            transactionResponses.add(mapping);
+        });
+        return transactionResponses;
+
+    }
+
+    public List<TransactionResponse> getAllTransactionsofhotel(Long hotelId){
+        List<Transaction> transactions=transactionRepository.findAllByHotelId(hotelId);
+
+        List<TransactionResponse> transactionResponses= new ArrayList<>();
+        transactions.forEach(transaction ->{
+            TransactionResponse mapping = new TransactionResponse();
+            mapping.setTransaction(transaction.getTransaction());
+            mapping.setAmount(transaction.getAmount());
+            mapping.setManagerId(transaction.getHotel().getManagerId());
+            transactionResponses.add(mapping);
+        });
+
+        return transactionResponses;
+
+    }
 }

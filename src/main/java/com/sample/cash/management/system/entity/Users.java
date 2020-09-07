@@ -26,7 +26,7 @@ public class Users extends AbstractEntity{
     @Column(name = "name_of_user", nullable = false)
     private String nameOfUser;
 
-    @Column(name = "email",nullable = false)
+    @Column(name = "email",unique = true,nullable = false)
     private String email;
 
     @Column(name = "password", nullable = false)

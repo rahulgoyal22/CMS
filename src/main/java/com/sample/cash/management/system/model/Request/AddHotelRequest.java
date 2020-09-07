@@ -14,6 +14,6 @@ public class AddHotelRequest {
     private String managerId;
     private String emailAddress;
     private String password;
-   // private Users user;
+    private String collectorEmail;
     private Long balance;
 }

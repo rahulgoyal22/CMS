@@ -25,16 +25,11 @@ public class TransactionController {
     private HotelService hotelService;
 
       @GetMapping("/transaction")
-      private List<TransactionResponse> getTransactions(){
+      private List<TransactionResponse> getTransactions() {
           return transactionService.getAllTransaction();
 
       }
 
-//    @RequestMapping("/transaction/{id}")
-//    public Transaction getTransactionById(@PathVariable Long id)
-//    {
-//        return this.transactionService.getTransactionById(id);
-//    }
 
     @RequestMapping("/transaction/{id}")
     public TransactionResponse getTransactionById(@PathVariable Long id) {
@@ -42,7 +37,7 @@ public class TransactionController {
         return transactionService.getTransactionById(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/hotels/{hotelId}/transaction")
+    @RequestMapping(method = RequestMethod.POST,value = "/hotel/{hotelId}/transaction")
     public ServiceResponse addTransaction(@RequestBody AddTransactionRequest addTransactionRequest, @PathVariable Long hotelId)
     {
 
@@ -50,16 +45,16 @@ public class TransactionController {
     }
 
     @RequestMapping("/hotel/{hotelId}/transaction")
-    public List<Transaction> getAllTransactions(@PathVariable Long hotelId) {
-        return hotelService.getAllTransactions(hotelId);
+    public List<TransactionResponse> getAllTransactionsofhotel(@PathVariable Long hotelId) {
+        return transactionService.getAllTransactionsofhotel(hotelId);
     }
 
     @GetMapping("/hotel/{hotelId}/dailytransaction")
-    public List<Transaction> getAllByDatetimeBetween(@PathVariable Long hotelId,
+    public List<TransactionResponse> getAllByDatetimeBetween(@PathVariable Long hotelId,
                                                      @RequestParam("start-date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                                      @RequestParam("end-date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
 
-        return hotelService.getdailytransaction(startDate, endDate, hotelId);
+        return transactionService.getdailytransaction(startDate, endDate, hotelId);
     }
 
 

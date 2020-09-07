@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.sample.cash.management.system.entity.Transaction;
+import com.sample.cash.management.system.entity.Users;
 import com.sample.cash.management.system.enums.Status;
 import com.sample.cash.management.system.exception.UnprocessableEntity;
 import com.sample.cash.management.system.model.Request.AddHotelRequest;
@@ -12,6 +13,7 @@ import com.sample.cash.management.system.model.Request.UpdateHotelRequest;
 import com.sample.cash.management.system.model.Response.HotelResponse;
 import com.sample.cash.management.system.model.Response.ServiceResponse;
 import com.sample.cash.management.system.repository.TransactionRepository;
+import com.sample.cash.management.system.repository.UsersRepository;
 import lombok.var;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class HotelService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
+	@Autowired
+	private UsersRepository usersRepository;
+
 
 	public List<HotelResponse> getAllHotels() {
 		List<Hotel> hotels=hotelRepository.findAll();
@@ -42,7 +47,9 @@ public class HotelService {
 
 
 	public ServiceResponse addHotel(AddHotelRequest addHotelRequest) {
-		hotelRepository.save(Hotel.builder().managerId(addHotelRequest.getManagerId()).emailAddress(addHotelRequest.getEmailAddress()).password(addHotelRequest.getPassword()).balance(addHotelRequest.getBalance()).build());
+		Users collector=usersRepository.findByEmail(addHotelRequest.getCollectorEmail());
+		// if collector doesnot exist throw exception
+		hotelRepository.save(Hotel.builder().managerId(addHotelRequest.getManagerId()).emailAddress(addHotelRequest.getEmailAddress()).user(collector).password(addHotelRequest.getPassword()).balance(addHotelRequest.getBalance()).build());
 		return ServiceResponse.builder().status(Status.Success).build();
 
 	}
@@ -80,14 +87,7 @@ public HotelResponse getHotel(Long id) {
 		}
 	}
 
-	public List<Transaction> getAllTransactions(Long id){
-		return transactionRepository.findAllByHotelId(id);
 
-	}
-	public List<Transaction> getdailytransaction(Date start, Date end, Long id){
-		return transactionRepository.findAllByCreatedAtBetweenAndHotelId(start,end,id);
-
-	}
 
 
 }
