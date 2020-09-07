@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 
-
 @Data
 @Entity
 @Builder
@@ -17,21 +16,21 @@ import javax.persistence.*;
 @AllArgsConstructor
 
 
-public class Transaction extends AbstractEntity{
+public class Transaction extends AbstractEntity {
 
     public enum transactionTypes {
 
-        debit,credit;
+        debit, credit;
     }
 
     @ManyToOne(targetEntity = Hotel.class)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @Column(name= "type_of_transaction",nullable = false)
+    @Column(name = "type_of_transaction", nullable = false)
     private transactionTypes transaction;
 
-    @Column(name = "amount",nullable = false)
+    @Column(name = "amount", nullable = false)
     private double amount;
 
 }

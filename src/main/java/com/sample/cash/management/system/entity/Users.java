@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 
-
-
 @Getter
 @Setter
 @Entity
@@ -19,11 +17,11 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @ToString
 @JsonInclude
-public class Users extends AbstractEntity{
+public class Users extends AbstractEntity {
 
     public enum userTypes {
 
-        collector,approver;
+        collector, approver;
     }
 
     @Column(name = "type_of_user", nullable = false)
@@ -32,7 +30,7 @@ public class Users extends AbstractEntity{
     @Column(name = "name_of_user", nullable = false)
     private String nameOfUser;
 
-    @Column(name = "email",nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "password", nullable = false)

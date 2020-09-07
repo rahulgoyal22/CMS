@@ -7,7 +7,7 @@ import com.sample.cash.management.system.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MappingService {
@@ -23,10 +23,10 @@ public class MappingService {
         Optional<Users> collector = usersRepository.findById(collectorId);
         Optional<Users> approver = usersRepository.findById(approverId);
 
-        if(collector.isPresent() && approver.isPresent() && collector.get().getTypeOfUser()== Users.userTypes.collector && approver.get()
-                .getTypeOfUser()== Users.userTypes.approver){
+        if (collector.isPresent() && approver.isPresent() && collector.get().getTypeOfUser() == Users.userTypes.collector && approver.get()
+                .getTypeOfUser() == Users.userTypes.approver) {
 
-            Mapping mapping  = new Mapping();
+            Mapping mapping = new Mapping();
             mapping.setApproverId(approverId);
             mapping.setCollectorId(collectorId);
 
@@ -34,5 +34,25 @@ public class MappingService {
             return "Success";
         }
         return "sed";
+    }
+
+    public List<Map<String, String>> getAllApprovers() {
+        List<Map<String, String>> maps = new ArrayList<>();
+        mappingRepository.findAll().forEach(mapping -> {
+                    Optional<Users> approver = usersRepository.findById(mapping.getApproverId());
+                    Optional<Users> collector = usersRepository.findById(mapping.getCollectorId());
+
+                    if (approver.isPresent() && collector.isPresent()) {
+                        Map<String, String> namesMap = new HashMap<>();
+                        namesMap.put(collector.get().getNameOfUser(), approver.get().getNameOfUser());
+                        maps.add(namesMap);
+
+
+                    }
+
+                }
+
+        );
+        return maps;
     }
 }

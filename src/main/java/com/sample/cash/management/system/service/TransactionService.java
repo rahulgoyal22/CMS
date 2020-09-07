@@ -2,7 +2,6 @@ package com.sample.cash.management.system.service;
 
 import com.sample.cash.management.system.entity.Hotel;
 import com.sample.cash.management.system.entity.Transaction;
-import com.sample.cash.management.system.entity.Users;
 import com.sample.cash.management.system.repository.HotelRepository;
 import com.sample.cash.management.system.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,7 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository transactionRepository;
-    @Autowired
-    private HotelService hotelService;
+
     @Autowired
     private HotelRepository hotelRepository;
 

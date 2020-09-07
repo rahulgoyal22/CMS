@@ -19,31 +19,31 @@ public class UsersController {
         return usersService.getAllUsers();
 
     }
+
     @GetMapping("/users/{id}")
     public Users getUsers(@PathVariable Long id) {
-        return  usersService.getUser(id);
+        return usersService.getUser(id);
     }
 
-    @RequestMapping(method= RequestMethod.POST,value="/users")
-    public Users addUsers(@RequestBody Users users)
-    {
+    @RequestMapping(method = RequestMethod.POST, value = "/users")
+    public Users addUsers(@RequestBody Users users) {
         return usersService.addUsers(users);
     }
-    @RequestMapping(method=RequestMethod.PUT,value="/users/{id}")
-    public Users updateUser (@RequestBody Users user, @PathVariable Long id)
-    {
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
+    public Users updateUser(@RequestBody Users user, @PathVariable Long id) {
         user.setId(id);
         Users h = usersService.getUser(id);
-        if( h!= null) {
+        if (h != null) {
             user.setCreatedAt(h.getCreatedAt());
             return usersService.updateUsers(user);
-        }else {
+        } else {
             return null;
         }
     }
 
     @RequestMapping("/hotelcollectors")
-    public List<Users> listHotelCollectors (){
+    public List<Users> listHotelCollectors() {
         return usersService.listHotelCollectors();
     }
 }

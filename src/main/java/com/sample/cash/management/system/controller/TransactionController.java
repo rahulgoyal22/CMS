@@ -21,21 +21,19 @@ public class TransactionController {
     private HotelService hotelService;
 
     @GetMapping("/transaction")
-    public List<Transaction> getallTransaction(){
+    public List<Transaction> getallTransaction() {
         return transactionService.getAllTransaction();
     }
 
     @RequestMapping("/transaction/{id}")
-    public Transaction getTransactionById(@PathVariable Long id)
-    {
+    public Transaction getTransactionById(@PathVariable Long id) {
         return this.transactionService.getTransactionById(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/hotels/{hotelId}/transaction")
-    public Transaction addTransaction(@RequestBody Transaction transaction,@PathVariable Long hotelId)
-    {
+    @RequestMapping(method = RequestMethod.POST, value = "/hotels/{hotelId}/transaction")
+    public Transaction addTransaction(@RequestBody Transaction transaction, @PathVariable Long hotelId) {
 
-        return transactionService.addTransaction(transaction,hotelId);
+        return transactionService.addTransaction(transaction, hotelId);
     }
 
     @RequestMapping("/hotel/{hotelId}/transaction")

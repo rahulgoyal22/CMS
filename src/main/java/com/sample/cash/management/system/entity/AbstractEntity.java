@@ -31,6 +31,8 @@ public abstract class AbstractEntity {
     }
 
     @PreUpdate
-    protected void onUpdate(){this.updatedAt = new Date();}
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 
 }

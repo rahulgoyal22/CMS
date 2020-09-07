@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class UsersService {
 
@@ -28,23 +29,19 @@ public class UsersService {
     public Users getUser(Long id) {
 
         Optional<Users> user = usersRepository.findById(id);
-        if (user.isPresent())
-        {
+        if (user.isPresent()) {
             return user.get();
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-    public Users updateUsers(Users user)
-    {
+    public Users updateUsers(Users user) {
         return usersRepository.save(user);
     }
 
-    public List<Users> listHotelCollectors(){
-       return  usersRepository.findAllByTypeOfUser(Users.userTypes.collector);
+    public List<Users> listHotelCollectors() {
+        return usersRepository.findAllByTypeOfUser(Users.userTypes.collector);
     }
 
 }

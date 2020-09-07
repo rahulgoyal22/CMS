@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/hotels")
+@RequestMapping(value = "/hotels")
 public class HotelController {
 
     @Autowired
@@ -51,11 +51,8 @@ public class HotelController {
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
     public HotelDto updateHotel(@RequestBody HotelUpdateDto hotelUpdateDto, @PathVariable Long id) {
 
-        return hotelService.updateHotel(hotelUpdateDto,id);
+        return hotelService.updateHotel(hotelUpdateDto, id);
     }
-
-
-
 
 
 }

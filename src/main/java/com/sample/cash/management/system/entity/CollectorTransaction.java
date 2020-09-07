@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "collector")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Collector extends AbstractEntity{
+public class CollectorTransaction extends AbstractEntity {
 
     @ManyToOne(targetEntity = Users.class)
     @JoinColumn(name = "users_id")

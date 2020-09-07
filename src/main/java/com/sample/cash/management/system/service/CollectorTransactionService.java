@@ -1,26 +1,28 @@
 package com.sample.cash.management.system.service;
 
-import com.sample.cash.management.system.entity.Collector;
+
+import com.sample.cash.management.system.entity.CollectorTransaction;
 import com.sample.cash.management.system.entity.Hotel;
 import com.sample.cash.management.system.entity.Mapping;
 import com.sample.cash.management.system.entity.Users;
+import com.sample.cash.management.system.repository.CollectorTransactionRepository;
 import com.sample.cash.management.system.repository.HotelRepository;
 import com.sample.cash.management.system.repository.MappingRepository;
 import com.sample.cash.management.system.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.sample.cash.management.system.repository.CollectorRepository;
 
-import javax.xml.crypto.Data;
+
+
 import java.util.Date;
 import java.util.Optional;
 
 @Service
 
-public class CollectorService {
+public class CollectorTransactionService {
 
     @Autowired
-    CollectorRepository collectorRepository;
+    CollectorTransactionRepository collectorTransactionRepository;
 
     @Autowired
     UsersRepository usersRepository;
@@ -32,7 +34,7 @@ public class CollectorService {
     MappingRepository mappingRepository;
 
 
-    public Collector collectorTransaction(Collector collector,Long userID){
+    public CollectorTransaction collectorTransaction(CollectorTransaction collector,Long userID){
         Optional<Users> user = usersRepository.findById(userID);
         if(user.isPresent() && user.get().getTypeOfUser()== Users.userTypes.collector){
             collector.setUser(user.get());
@@ -44,7 +46,7 @@ public class CollectorService {
         Long hotelId=collector.getId();
         Optional<Hotel> hotel= hotelRepository.findById(hotelId);
 
-        if(hotel.isPresent() && hotel.get().getUser().getId()==userID)
+        if(hotel.isPresent() && hotel.get().getUser().getId()==userID && hotel.get().getBalance()>=collector.getAmount())
         {
 
             collector.setHotel(hotel.get());
@@ -56,22 +58,27 @@ public class CollectorService {
 
         collector.setApproved(false);
 
-        return collectorRepository.save(collector);
+        return collectorTransactionRepository.save(collector);
 
 
     }
 
-    public Collector approveTransaction(Long approverId, Long collectorId, double amount, Date date,Long hotelId){
+    public CollectorTransaction approveTransaction(Long approverId, Long collectorId, double amount, Date date,Long hotelId){
         Mapping mapping =mappingRepository.findByCollectorId(collectorId);
         if(mapping != null && mapping.getApproverId()==approverId)
         {
             Date enddate= new Date();
             enddate.after(date);
-            Collector collector=collectorRepository.findByCreatedAtBetweenAndUserIdAndHotelId(date,enddate,collectorId,hotelId);
-            if(collector.getAmount()==amount && collector.getApproved() == false)
+            CollectorTransaction collector=collectorTransactionRepository.findByCreatedAtBetweenAndUserIdAndHotelIdAndAmount(date,enddate,collectorId,hotelId,amount);
+            if(collector.getApproved() == false)
             {
                 collector.setApproved(true);
                 collector.getHotel().setBalance(collector.getHotel().getBalance()-amount);
+                collectorTransactionRepository.save(collector);
+            }
+            else
+            {
+                return null;
             }
             return collector;
         }
