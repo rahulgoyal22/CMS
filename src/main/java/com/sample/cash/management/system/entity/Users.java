@@ -1,17 +1,13 @@
 package com.sample.cash.management.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sample.cash.management.system.enums.UserType;
 import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-
-enum userTypes {
-
-    collector,approver;
-}
 
 @Getter
 @Setter
@@ -25,7 +21,7 @@ enum userTypes {
 public class Users extends AbstractEntity{
 
     @Column(name = "type_of_user", nullable = false)
-    private userTypes typeOfUser;
+    private UserType typeOfUser;
 
     @Column(name = "name_of_user", nullable = false)
     private String nameOfUser;

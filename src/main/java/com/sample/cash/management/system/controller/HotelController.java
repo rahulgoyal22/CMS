@@ -1,17 +1,15 @@
 package com.sample.cash.management.system.controller;
 
 import com.sample.cash.management.system.entity.Hotel;
-import com.sample.cash.management.system.entity.Transaction;
-import com.sample.cash.management.system.model.HotelDto;
-import com.sample.cash.management.system.model.HotelUpdateDto;
+import com.sample.cash.management.system.model.Request.AddHotelRequest;
+import com.sample.cash.management.system.model.Request.UpdateHotelRequest;
+import com.sample.cash.management.system.model.Response.HotelResponse;
+import com.sample.cash.management.system.model.Response.ServiceResponse;
 import com.sample.cash.management.system.service.HotelService;
 import com.sample.cash.management.system.service.UsersService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -25,33 +23,31 @@ public class HotelController {
     @Autowired
     private UsersService usersService;
 
-    @GetMapping("/")
-    public List<Hotel> getallHotels() {
-//		ObjectMapper objectMapper= new ObjectMapper();
-//		List<Hotel> h=hotelService.getAllHotels();
-//		String s=objectMapper.writeValueAsString(h);
-        return hotelService.getAllHotels();
 
-//	  return ResponseEntity.ok(hotelService.getAllHotels());
+
+    @GetMapping("/")
+    public List<HotelResponse> getHotels() {
+        return hotelService.getAllHotels();
     }
+
+
 
     @RequestMapping("/{id}")
-    public HotelDto getHotel(@PathVariable Long id) {
+    public HotelResponse getHotel(@PathVariable Long id) {
 
         return hotelService.getHotel(id);
-
     }
 
+
     @RequestMapping(method = RequestMethod.POST, value = "/")
-    public Hotel addHotel(@RequestBody Hotel hotel) {
-        hotel.setUser(usersService.getUser(hotel.getId()));
-        return hotelService.addHotel(hotel);
+    public ServiceResponse addHotel(@RequestBody AddHotelRequest addHotelRequest) {
+        return hotelService.addHotel(addHotelRequest);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-    public HotelDto updateHotel(@RequestBody HotelUpdateDto hotelUpdateDto, @PathVariable Long id) {
+    public ServiceResponse updateHotel(@RequestBody UpdateHotelRequest updateHotelRequest, @PathVariable Long id) {
 
-        return hotelService.updateHotel(hotelUpdateDto,id);
+        return hotelService.updateHotel(updateHotelRequest,id);
     }
 
 

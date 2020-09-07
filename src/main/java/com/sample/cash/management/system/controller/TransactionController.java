@@ -2,6 +2,10 @@ package com.sample.cash.management.system.controller;
 
 import com.sample.cash.management.system.entity.Transaction;
 
+import com.sample.cash.management.system.model.Request.AddTransactionRequest;
+import com.sample.cash.management.system.model.Response.HotelResponse;
+import com.sample.cash.management.system.model.Response.ServiceResponse;
+import com.sample.cash.management.system.model.Response.TransactionResponse;
 import com.sample.cash.management.system.service.HotelService;
 import com.sample.cash.management.system.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +24,29 @@ public class TransactionController {
     @Autowired
     private HotelService hotelService;
 
-    @GetMapping("/transaction")
-    public List<Transaction> getallTransaction(){
-        return transactionService.getAllTransaction();
-    }
+      @GetMapping("/transaction")
+      private List<TransactionResponse> getTransactions(){
+          return transactionService.getAllTransaction();
+
+      }
+
+//    @RequestMapping("/transaction/{id}")
+//    public Transaction getTransactionById(@PathVariable Long id)
+//    {
+//        return this.transactionService.getTransactionById(id);
+//    }
 
     @RequestMapping("/transaction/{id}")
-    public Transaction getTransactionById(@PathVariable Long id)
-    {
-        return this.transactionService.getTransactionById(id);
+    public TransactionResponse getTransactionById(@PathVariable Long id) {
+
+        return transactionService.getTransactionById(id);
     }
 
     @RequestMapping(method = RequestMethod.POST,value = "/hotels/{hotelId}/transaction")
-    public Transaction addTransaction(@RequestBody Transaction transaction,@PathVariable Long hotelId)
+    public ServiceResponse addTransaction(@RequestBody AddTransactionRequest addTransactionRequest, @PathVariable Long hotelId)
     {
 
-        return transactionService.addTransaction(transaction,hotelId);
+        return transactionService.addTransaction(addTransactionRequest,hotelId);
     }
 
     @RequestMapping("/hotel/{hotelId}/transaction")
