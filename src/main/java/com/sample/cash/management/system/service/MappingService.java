@@ -2,7 +2,9 @@ package com.sample.cash.management.system.service;
 
 import com.sample.cash.management.system.entity.Mapping;
 import com.sample.cash.management.system.entity.Users;
+import com.sample.cash.management.system.enums.Status;
 import com.sample.cash.management.system.enums.UserType;
+import com.sample.cash.management.system.model.Response.ServiceResponse;
 import com.sample.cash.management.system.repository.MappingRepository;
 import com.sample.cash.management.system.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ public class MappingService {
     UsersRepository usersRepository;
 
 
-    public String addMapping(Long collectorId, Long approverId) {
+    public ServiceResponse addMapping(Long collectorId, Long approverId) {
         Optional<Users> collector = usersRepository.findById(collectorId);
         Optional<Users> approver = usersRepository.findById(approverId);
 
@@ -32,9 +34,9 @@ public class MappingService {
             mapping.setCollectorId(collectorId);
 
             mappingRepository.save(mapping);
-            return "Success";
+            return ServiceResponse.builder().status(Status.Success).build();
         }
-        return "sed";
+        return ServiceResponse.builder().status(Status.Failure).build();
     }
 
     public List<Map<String, String>> getAllApprovers() {
