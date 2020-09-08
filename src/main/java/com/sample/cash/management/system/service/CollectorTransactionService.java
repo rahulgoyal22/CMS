@@ -49,7 +49,9 @@ public class CollectorTransactionService {
             throw new UnprocessableEntity(NO_SUCH_COLLECTOR);
         }
 
+
         Long hotelId=collector.getId();
+
         Optional<Hotel> hotel= hotelRepository.findById(hotelId);
 
         if(hotel.isPresent() && hotel.get().getUser().getId()==userID && hotel.get().getBalance()>=collector.getAmount())
