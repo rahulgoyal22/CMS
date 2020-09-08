@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "collector")
+@Table(name = "collector_transaction")
 @AllArgsConstructor
 @NoArgsConstructor
 public class CollectorTransaction extends AbstractEntity {
