@@ -5,7 +5,10 @@ import com.sample.cash.management.system.entity.CollectorTransaction;
 import com.sample.cash.management.system.entity.Hotel;
 import com.sample.cash.management.system.entity.Mapping;
 import com.sample.cash.management.system.entity.Users;
+import com.sample.cash.management.system.enums.Status;
 import com.sample.cash.management.system.enums.UserType;
+import com.sample.cash.management.system.exception.UnprocessableEntity;
+import com.sample.cash.management.system.model.Response.ServiceResponse;
 import com.sample.cash.management.system.repository.CollectorTransactionRepository;
 import com.sample.cash.management.system.repository.HotelRepository;
 import com.sample.cash.management.system.repository.MappingRepository;
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
+
+import static com.sample.cash.management.system.constant.Constants.*;
 
 @Service
 
@@ -35,13 +40,13 @@ public class CollectorTransactionService {
     MappingRepository mappingRepository;
 
 
-    public CollectorTransaction collectorTransaction(CollectorTransaction collector,Long userID){
+    public ServiceResponse collectorTransaction(CollectorTransaction collector, Long userID){
         Optional<Users> user = usersRepository.findById(userID);
         if(user.isPresent() && user.get().getTypeOfUser()== UserType.collector){
             collector.setUser(user.get());
         }
         else{
-            return null;
+            throw new UnprocessableEntity(NO_SUCH_COLLECTOR);
         }
 
 
@@ -56,17 +61,18 @@ public class CollectorTransactionService {
         }
         else
         {
-            return null;
+            throw new UnprocessableEntity(NO_SUCH_HOTEL);
         }
 
         collector.setApproved(false);
+        collectorTransactionRepository.save(collector);
 
-        return collectorTransactionRepository.save(collector);
+       return ServiceResponse.builder().status(Status.Success).build();
 
 
     }
 
-    public CollectorTransaction approveTransaction(Long approverId, Long collectorId, double amount, Date date,Long hotelId){
+    public ServiceResponse approveTransaction(Long approverId, Long collectorId, double amount, Date date,Long hotelId){
         Mapping mapping =mappingRepository.findByCollectorId(collectorId);
         if(mapping != null && mapping.getApproverId()==approverId)
         {
@@ -81,10 +87,10 @@ public class CollectorTransactionService {
             }
             else
             {
-                return null;
+                throw new UnprocessableEntity(ALSO_COLLECTOR_APPROVED);
             }
-            return collector;
+            return ServiceResponse.builder().status(Status.Success).build();
         }
-        return null;
+        throw new UnprocessableEntity(NO_SUCH_MAPPING_DATA);
     }
 }

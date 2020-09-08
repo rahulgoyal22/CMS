@@ -48,7 +48,6 @@ public class UsersService {
             throw new UnprocessableEntity(NO_SUCH_USER);
         }
         else {
-           // ModelMapper modelMapper= new ModelMapper();
             UserResponse userResponse=modelMapper.map(users.get(),UserResponse.class);
             return userResponse;
 
@@ -69,7 +68,7 @@ public class UsersService {
         }
         else
         {
-            return null;
+            throw new UnprocessableEntity(NO_SUCH_USER);
         }
     }
 

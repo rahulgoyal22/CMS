@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserResponse {
+    protected Long id;
     private UserType typeOfUser;
     private String nameOfUser;
     private String email;

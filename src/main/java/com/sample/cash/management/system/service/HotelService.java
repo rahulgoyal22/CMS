@@ -48,7 +48,6 @@ public class HotelService {
 
 	public ServiceResponse addHotel(AddHotelRequest addHotelRequest) {
 		Users collector=usersRepository.findByEmail(addHotelRequest.getCollectorEmail());
-		// if collector doesnot exist throw exception
 		hotelRepository.save(Hotel.builder().managerId(addHotelRequest.getManagerId()).emailAddress(addHotelRequest.getEmailAddress()).user(collector).password(addHotelRequest.getPassword()).balance(addHotelRequest.getBalance()).build());
 		return ServiceResponse.builder().status(Status.Success).build();
 
@@ -62,7 +61,6 @@ public HotelResponse getHotel(Long id) {
 			       throw new UnprocessableEntity(NO_SUCH_HOTEL);
 	        }
 	        else {
-		         //  ModelMapper modelMapper= new ModelMapper();
 		           HotelResponse hotelResponse=modelMapper.map(hotel.get(),HotelResponse.class);
 		           return hotelResponse;
 
@@ -83,7 +81,7 @@ public HotelResponse getHotel(Long id) {
 
 		else
 		{
-			return null;
+			throw new UnprocessableEntity(NO_SUCH_HOTEL);
 		}
 	}
 

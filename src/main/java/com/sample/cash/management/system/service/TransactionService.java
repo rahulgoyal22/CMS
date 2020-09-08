@@ -39,7 +39,6 @@ public class TransactionService {
 
         if (h.isPresent()) {
             Hotel hotel = h.get();
-          //  addTransactionRequest.setHotel(hotel);
             double temp = addTransactionRequest.getAmount();
             if (addTransactionRequest.getTransaction() == TransactionType.debit) {
                 temp = 0 - temp;

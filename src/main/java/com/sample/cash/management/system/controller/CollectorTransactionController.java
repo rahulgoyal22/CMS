@@ -1,6 +1,7 @@
 package com.sample.cash.management.system.controller;
 
 import com.sample.cash.management.system.entity.CollectorTransaction;
+import com.sample.cash.management.system.model.Response.ServiceResponse;
 import com.sample.cash.management.system.service.CollectorTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,13 +17,13 @@ public class CollectorTransactionController {
     CollectorTransactionService collectorTransactionService;
 
     @PostMapping("/collector-transaction")
-    public CollectorTransaction collectorTransaction(@RequestBody CollectorTransaction collector, @PathVariable Long userId) {
+    public ServiceResponse collectorTransaction(@RequestBody CollectorTransaction collector, @PathVariable Long userId) {
         return collectorTransactionService.collectorTransaction(collector, userId);
     }
 
 
     @PutMapping("/approveTransaction")
-    public CollectorTransaction approveTransaction(@PathVariable Long userId,
+    public ServiceResponse approveTransaction(@PathVariable Long userId,
                                                    @RequestParam(name = "collectorId") Long collectorId,
                                                    @RequestParam(name = "amount") double amount,
                                                    @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
