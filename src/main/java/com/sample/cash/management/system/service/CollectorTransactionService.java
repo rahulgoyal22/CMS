@@ -44,7 +44,9 @@ public class CollectorTransactionService {
             return null;
         }
 
+
         Long hotelId=collector.getId();
+
         Optional<Hotel> hotel= hotelRepository.findById(hotelId);
 
         if(hotel.isPresent() && hotel.get().getUser().getId()==userID && hotel.get().getBalance()>=collector.getAmount())
