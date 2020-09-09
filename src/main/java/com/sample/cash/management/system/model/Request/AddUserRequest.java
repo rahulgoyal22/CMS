@@ -13,6 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 
 public class AddUserRequest {
+
     private UserType typeOfUser;
     private String nameOfUser;
     private String email;

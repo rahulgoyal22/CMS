@@ -11,6 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddHotelRequest {
+
     private String managerId;
     private String emailAddress;
     private String password;

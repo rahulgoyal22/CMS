@@ -12,6 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddTransactionRequest {
+
     private TransactionType transaction;
     private double amount;
 }

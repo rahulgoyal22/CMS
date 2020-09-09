@@ -12,9 +12,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HotelResponse {
-    protected Long id;
+    private Long id;
     private String managerId;
     private String emailAddress;
-   // private String password;
     private double balance;
 }
