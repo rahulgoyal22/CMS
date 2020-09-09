@@ -6,52 +6,43 @@ import com.sample.cash.management.system.model.Request.UpdateHotelRequest;
 import com.sample.cash.management.system.model.Response.HotelResponse;
 import com.sample.cash.management.system.model.Response.ServiceResponse;
 import com.sample.cash.management.system.service.HotelService;
-import com.sample.cash.management.system.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/hotels")
+@RequestMapping(value = "/hotels")
 public class HotelController {
 
     @Autowired
 
     private HotelService hotelService;
 
-    @Autowired
-    private UsersService usersService;
 
-
-
-    @GetMapping("/")
+    @GetMapping(value = "/")
     public List<HotelResponse> getHotels() {
         return hotelService.getAllHotels();
     }
 
 
-
-    @RequestMapping("/{id}")
-    public HotelResponse getHotel(@PathVariable Long id) {
+    @GetMapping(value = "/{id}")
+    public HotelResponse getHotel(@PathVariable(name = "id") Long id) {
 
         return hotelService.getHotel(id);
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/")
+    @PostMapping(value = "/")
     public ServiceResponse addHotel(@RequestBody AddHotelRequest addHotelRequest) {
         return hotelService.addHotel(addHotelRequest);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-    public ServiceResponse updateHotel(@RequestBody UpdateHotelRequest updateHotelRequest, @PathVariable Long id) {
+    @PutMapping(value = "/{id}")
+    public ServiceResponse updateHotel(@RequestBody UpdateHotelRequest updateHotelRequest, @PathVariable(name = "id") Long id) {
 
-        return hotelService.updateHotel(updateHotelRequest,id);
+        return hotelService.updateHotel(updateHotelRequest, id);
     }
-
-
-
 
 
 }

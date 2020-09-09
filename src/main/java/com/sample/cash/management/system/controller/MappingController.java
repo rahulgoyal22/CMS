@@ -9,18 +9,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping(value = "/mapping")
 public class MappingController {
 
     @Autowired
-    MappingService mappingService;
+    private MappingService mappingService;
 
-    @RequestMapping("/mapping")
+    @GetMapping(value = "/")
     public List<Map<String, String>> getAllApprovers() {
         return mappingService.getAllApprovers();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/mapping")
-    public ServiceResponse addMapping(@RequestParam(name = "collectorId") Long collectorId, @RequestParam(name = "approverId") Long approverId) {
+    @PostMapping(value = "")
+    public ServiceResponse addMapping(@RequestParam(name = "collector-id") Long collectorId, @RequestParam(name = "approver-id") Long approverId) {
         return mappingService.addMapping(collectorId, approverId);
     }
 }

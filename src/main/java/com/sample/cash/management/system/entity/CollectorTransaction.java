@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-//for transaction from hotel to oyo collector
-
 @Data
 @Entity
 @Table(name = "collector_transaction")

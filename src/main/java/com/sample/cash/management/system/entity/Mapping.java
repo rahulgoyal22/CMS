@@ -15,7 +15,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 
 public class Mapping extends AbstractEntity {
-
     @Column(name = "collector_id", unique = true)
     private Long collectorId;
 

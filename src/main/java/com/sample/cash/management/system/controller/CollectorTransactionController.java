@@ -7,27 +7,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @RestController
-@RequestMapping(value = "/user/{userId}")
+@RequestMapping(value = "/user/{user-id}")
 public class CollectorTransactionController {
 
     @Autowired
-    CollectorTransactionService collectorTransactionService;
+    private CollectorTransactionService collectorTransactionService;
 
-    @PostMapping("/collector-transaction")
-    public ServiceResponse collectorTransaction(@RequestBody CollectorTransaction collector, @PathVariable Long userId) {
+    @PostMapping(value = "/collector-transaction")
+    public ServiceResponse collectorTransaction(@RequestBody CollectorTransaction collector, @PathVariable(name = "user-id") Long userId) {
         return collectorTransactionService.collectorTransaction(collector, userId);
     }
 
 
-    @PutMapping("/approveTransaction")
-    public ServiceResponse approveTransaction(@PathVariable Long userId,
-                                                   @RequestParam(name = "collectorId") Long collectorId,
-                                                   @RequestParam(name = "amount") double amount,
-                                                   @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-                                                   @RequestParam("hotelId") Long hotelId) {
+    @PutMapping(value = "/approve-transaction")
+    public ServiceResponse approveTransaction(@PathVariable(name = "user-id") Long userId,
+                                              @RequestParam(name = "collector-id") Long collectorId,
+                                              @RequestParam(name = "amount") double amount,
+                                              @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+                                              @RequestParam("hotel-id") Long hotelId) {
         return collectorTransactionService.approveTransaction(userId, collectorId, amount, date, hotelId);
     }
 

@@ -16,10 +16,10 @@ import java.util.*;
 public class MappingService {
 
     @Autowired
-    MappingRepository mappingRepository;
+    private MappingRepository mappingRepository;
 
     @Autowired
-    UsersRepository usersRepository;
+    private UsersRepository usersRepository;
 
 
     public ServiceResponse addMapping(Long collectorId, Long approverId) {
@@ -28,12 +28,7 @@ public class MappingService {
 
         if (collector.isPresent() && approver.isPresent() && collector.get().getTypeOfUser() == UserType.collector && approver.get()
                 .getTypeOfUser() == UserType.approver) {
-
-            Mapping mapping = new Mapping();
-            mapping.setApproverId(approverId);
-            mapping.setCollectorId(collectorId);
-
-            mappingRepository.save(mapping);
+            mappingRepository.save(Mapping.builder().approverId(approverId).collectorId(collectorId).build());
             return ServiceResponse.builder().status(Status.Success).build();
         }
         return ServiceResponse.builder().status(Status.Failure).build();
@@ -44,17 +39,12 @@ public class MappingService {
         mappingRepository.findAll().forEach(mapping -> {
                     Optional<Users> approver = usersRepository.findById(mapping.getApproverId());
                     Optional<Users> collector = usersRepository.findById(mapping.getCollectorId());
-
                     if (approver.isPresent() && collector.isPresent()) {
                         Map<String, String> namesMap = new HashMap<>();
                         namesMap.put(collector.get().getNameOfUser(), approver.get().getNameOfUser());
                         maps.add(namesMap);
-
-
                     }
-
                 }
-
         );
         return maps;
     }

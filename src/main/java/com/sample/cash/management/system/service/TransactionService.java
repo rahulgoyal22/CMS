@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,21 +30,17 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
     @Autowired
-    private HotelService hotelService;
-    @Autowired
     private HotelRepository hotelRepository;
 
     public ServiceResponse addTransaction(AddTransactionRequest addTransactionRequest, Long hotelId) {
-
-        Optional<Hotel> h = hotelRepository.findById(hotelId);
-
-        if (h.isPresent()) {
-            Hotel hotel = h.get();
-            double temp = addTransactionRequest.getAmount();
+        Optional<Hotel> hotelOptional = hotelRepository.findById(hotelId);
+        if (hotelOptional.isPresent()) {
+            Hotel hotel = hotelOptional.get();
+            double amount = addTransactionRequest.getAmount();
             if (addTransactionRequest.getTransaction() == TransactionType.debit) {
-                temp = 0 - temp;
+                amount = 0 - amount;
             }
-            hotel.setBalance(hotel.getBalance() + temp);
+            hotel.setBalance(hotel.getBalance() + amount);
             hotelRepository.save(hotel);
             transactionRepository.save(Transaction.builder().transaction(addTransactionRequest.getTransaction()).amount(addTransactionRequest.getAmount()).hotel(hotel).build());
             return ServiceResponse.builder().status(Status.Success).build();
@@ -52,12 +49,8 @@ public class TransactionService {
         }
     }
 
-
-
-
     public List<TransactionResponse> getAllTransaction(){
         List<Transaction> transactions = transactionRepository.findAll();
-
         List<TransactionResponse> transactionResponses= new ArrayList<>();
         transactions.forEach(transaction ->{
             TransactionResponse mapping = new TransactionResponse();
@@ -68,8 +61,6 @@ public class TransactionService {
         });
         return transactionResponses;
     }
-
-
 
     public TransactionResponse getTransactionById(Long id) {
         Optional<Transaction> transaction = transactionRepository.findById(id);
@@ -77,21 +68,17 @@ public class TransactionService {
             throw new UnprocessableEntity(NO_SUCH_TRANSACTION);
         }
         else {
-
             TransactionResponse transactionResponse=modelMapper.map(transaction.get(),TransactionResponse.class);
             transactionResponse.setManagerId(transaction.get().getHotel().getManagerId());
-
             return transactionResponse;
-
         }
-
     }
 
 
-    public List<TransactionResponse> getdailytransaction(Date start, Date end, Long id){
+    public List<TransactionResponse> getDailyTransaction(LocalDate start, LocalDate end, Long id){
         List<Transaction> transactions= transactionRepository.findAllByCreatedAtBetweenAndHotelId(start,end,id);
-
         List<TransactionResponse> transactionResponses= new ArrayList<>();
+
         transactions.forEach(transaction ->{
             TransactionResponse mapping = new TransactionResponse();
             mapping.setTransaction(transaction.getTransaction());
@@ -103,10 +90,10 @@ public class TransactionService {
 
     }
 
-    public List<TransactionResponse> getAllTransactionsofhotel(Long hotelId){
+    public List<TransactionResponse> getAllTransactionsByHotelId(Long hotelId){
         List<Transaction> transactions=transactionRepository.findAllByHotelId(hotelId);
-
         List<TransactionResponse> transactionResponses= new ArrayList<>();
+
         transactions.forEach(transaction ->{
             TransactionResponse mapping = new TransactionResponse();
             mapping.setTransaction(transaction.getTransaction());
@@ -114,8 +101,6 @@ public class TransactionService {
             mapping.setManagerId(transaction.getHotel().getManagerId());
             transactionResponses.add(mapping);
         });
-
         return transactionResponses;
-
     }
 }

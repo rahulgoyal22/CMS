@@ -14,9 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @ToString
 @JsonInclude
-public class Hotel extends AbstractEntity{
-
-
+public class Hotel extends AbstractEntity {
 
     @Column(name = "manager_id", nullable = false)
     private String managerId;
@@ -31,7 +29,7 @@ public class Hotel extends AbstractEntity{
     @JoinColumn(name = "users_id")
     private Users user;
 
-    @Column( name = "balance", nullable = false)
+    @Column(name = "balance", nullable = false)
     private double balance;
-    
+
 }

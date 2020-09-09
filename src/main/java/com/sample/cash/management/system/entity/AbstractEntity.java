@@ -4,33 +4,34 @@ package com.sample.cash.management.system.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
 @Data
 @MappedSuperclass
 public abstract class AbstractEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     protected Long id;
 
     @Column(name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     @PrePersist
     protected void onCreate() {
-//        this.id = UUID.randomUUID();
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
+        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
 
     }
 
     @PreUpdate
-    protected void onUpdate(){this.updatedAt = new Date();}
+    protected void onUpdate() {
+        this.updatedAt = LocalDate.now();
+    }
 
 }
