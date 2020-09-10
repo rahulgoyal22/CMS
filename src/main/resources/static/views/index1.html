@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>main page</title>
+
+</head>
+
+
+<body data-ng-app="cash.management.system">
+<hr/>
+<div class="container" data-ng-controller="UsersController">
+    <div class="row">
+        <label>TypeOfUser</label> <input type="text" data-ng-model="AddUserRequest.typeOfUser" class="input-sm spacing"/>
+<!--        <label>Skills</label> <input type="text" ng-model="skills" ng-list class="input-sm custom-width spacing"-->
+<!--                                     placeholder="use comma to separate skills"/>-->
+        <label>Name</label> <input type="text" data-ng-model="AddUserRequest.nameOfUser" class="input-sm spacing"/>
+        <label>Email</label> <input type="text" data-ng-model="AddUserRequest.email" class="input-sm spacing"/>
+        <label>password</label> <input type="text" data-ng-model="AddUserRequest.password" class="input-sm spacing"/>
+        <button data-ng-click="saveUser()" class="btn btn-sm btn-info">Save User</button>
+    </div>
+
+
+
+<!--    <hr/>-->
+<!--    <div class="row">-->
+<!--        <p>{{allUsers | json}}</p>-->
+<!--    </div>-->
+<!--    <hr/>-->
+
+<!--    <div class="row" ng-repeat="user in allUsers">-->
+<!--        <div class="">-->
+<!--            <h3>{{user.nameOfUser}}</h3>-->
+<!--&lt;!&ndash;            <span ng-repeat="skill in user.skillDtos" class="spacing">{{skill.skillName}}</span>&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+
+</div>
+
+</body>
+
+<script src="../js/angular.min.js"></script>
+<script src="../js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/UsersController.js"></script>
+<script src="../js/UsersService.js"></script>
+<link rel="stylesheet" href="../css/bootstrap.min.css"/>
+<link rel="stylesheet" href="../css/app.css"/>
+
+</html>
