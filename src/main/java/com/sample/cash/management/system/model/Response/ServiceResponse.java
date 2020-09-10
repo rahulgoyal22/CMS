@@ -17,6 +17,5 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 public class ServiceResponse {
     private Status status;
-
     private String message;
 }

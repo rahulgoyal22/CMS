@@ -18,15 +18,14 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @ToString
 @JsonInclude
-public class Users extends AbstractEntity{
-
+public class Users extends AbstractEntity {
     @Column(name = "type_of_user", nullable = false)
     private UserType typeOfUser;
 
     @Column(name = "name_of_user", nullable = false)
     private String nameOfUser;
 
-    @Column(name = "email",unique = true,nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     @Column(name = "password", nullable = false)

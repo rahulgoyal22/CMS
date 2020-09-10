@@ -10,6 +10,7 @@ import com.sample.cash.management.system.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,7 +22,7 @@ import static com.sample.cash.management.system.constant.Constants.NO_SUCH_USER;
 public class UsersService {
 
     private final UsersRepository usersRepository;
-    private ModelMapper modelMapper= new ModelMapper();
+    private ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public UsersService(UsersRepository usersRepository) {
@@ -29,9 +30,9 @@ public class UsersService {
     }
 
 
-    public List<UserResponse> getUsers(){
-        List<Users> users= usersRepository.findAll();
-        List<UserResponse> userResponses = users.stream().map(users1 -> modelMapper.map(users1,UserResponse.class) ).collect(Collectors.toList());
+    public List<UserResponse> getUsers() {
+        List<Users> users = usersRepository.findAll();
+        List<UserResponse> userResponses = users.stream().map(users1 -> modelMapper.map(users1, UserResponse.class)).collect(Collectors.toList());
         return userResponses;
     }
 
@@ -45,18 +46,14 @@ public class UsersService {
         Optional<Users> users = usersRepository.findById(id);
         if (!users.isPresent()) {
             throw new UnprocessableEntity(NO_SUCH_USER);
-        }
-        else {
-            UserResponse userResponse=modelMapper.map(users.get(),UserResponse.class);
+        } else {
+            UserResponse userResponse = modelMapper.map(users.get(), UserResponse.class);
             return userResponse;
-
         }
-
     }
 
-    public ServiceResponse updateUser(AddUserRequest addUserRequest,Long id)
-    {
-        if(usersRepository.findById(id).isPresent()) {
+    public ServiceResponse updateUser(AddUserRequest addUserRequest, Long id) {
+        if (usersRepository.findById(id).isPresent()) {
             Users users = usersRepository.findById(id).get();
             users.setEmail(addUserRequest.getEmail());
             users.setNameOfUser(addUserRequest.getNameOfUser());
@@ -64,11 +61,8 @@ public class UsersService {
             users.setTypeOfUser(addUserRequest.getTypeOfUser());
             usersRepository.save(users);
             return ServiceResponse.builder().status(Status.Success).build();
-        }
-        else
-        {
+        } else {
             throw new UnprocessableEntity(NO_SUCH_USER);
         }
     }
-
 }

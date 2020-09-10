@@ -27,66 +27,47 @@ import static com.sample.cash.management.system.constant.Constants.NO_SUCH_HOTEL
 @Service
 public class HotelService {
 
-	private ModelMapper modelMapper= new ModelMapper();
-	@Autowired
-	private  HotelRepository  hotelRepository;
+    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private HotelRepository hotelRepository;
 
-	@Autowired
-	private TransactionRepository transactionRepository;
+    @Autowired
+    private UsersRepository usersRepository;
 
-	@Autowired
-	private UsersRepository usersRepository;
-
-
-	public List<HotelResponse> getAllHotels() {
-		List<Hotel> hotels=hotelRepository.findAll();
-		List<HotelResponse> hotelResponses = hotels.stream().map(hotel -> modelMapper.map(hotel,HotelResponse.class)).collect(Collectors.toList());
-
-       return hotelResponses;
-	}
+    public List<HotelResponse> getAllHotels() {
+        List<Hotel> hotels = hotelRepository.findAll();
+        List<HotelResponse> hotelResponses = hotels.stream().map(hotel -> modelMapper.map(hotel, HotelResponse.class)).collect(Collectors.toList());
+        return hotelResponses;
+    }
 
 
-	public ServiceResponse addHotel(AddHotelRequest addHotelRequest) {
-		Users collector=usersRepository.findByEmail(addHotelRequest.getCollectorEmail());
-		hotelRepository.save(Hotel.builder().managerId(addHotelRequest.getManagerId()).emailAddress(addHotelRequest.getEmailAddress()).user(collector).password(addHotelRequest.getPassword()).balance(addHotelRequest.getBalance()).build());
-		return ServiceResponse.builder().status(Status.Success).build();
-
-	}
-
+    public ServiceResponse addHotel(AddHotelRequest addHotelRequest) {
+        Users collector = usersRepository.findByEmail(addHotelRequest.getCollectorEmail());
+        hotelRepository.save(Hotel.builder().managerId(addHotelRequest.getManagerId()).emailAddress(addHotelRequest.getEmailAddress()).user(collector).password(addHotelRequest.getPassword()).balance(addHotelRequest.getBalance()).build());
+        return ServiceResponse.builder().status(Status.Success).build();
+    }
 
 
-public HotelResponse getHotel(Long id) {
-	        Optional<Hotel> hotel = hotelRepository.findById(id);
-	        if (!hotel.isPresent()) {
-			       throw new UnprocessableEntity(NO_SUCH_HOTEL);
-	        }
-	        else {
-		           HotelResponse hotelResponse=modelMapper.map(hotel.get(),HotelResponse.class);
-		           return hotelResponse;
+    public HotelResponse getHotel(Long id) {
+        Optional<Hotel> hotel = hotelRepository.findById(id);
+        if (!hotel.isPresent()) {
+            throw new UnprocessableEntity(NO_SUCH_HOTEL);
+        } else {
+            HotelResponse hotelResponse = modelMapper.map(hotel.get(), HotelResponse.class);
+            return hotelResponse;
+        }
+    }
 
-	         }
-
-	}
-
-	public ServiceResponse updateHotel(UpdateHotelRequest updateHotelRequest, Long id)
-	{
-		if(hotelRepository.findById(id).isPresent())
-		{
-			Hotel hotel =hotelRepository.findById(id).get();
-			hotel.setEmailAddress(updateHotelRequest.getEmailAddress());
-			hotel.setPassword(updateHotelRequest.getPassword());
-			hotelRepository.save(hotel);
-			return ServiceResponse.builder().status(Status.Success).build();
-		}
-
-		else
-		{
-			throw new UnprocessableEntity(NO_SUCH_HOTEL);
-		}
-	}
-
-
-
-
+    public ServiceResponse updateHotel(UpdateHotelRequest updateHotelRequest, Long id) {
+        if (hotelRepository.findById(id).isPresent()) {
+            Hotel hotel = hotelRepository.findById(id).get();
+            hotel.setEmailAddress(updateHotelRequest.getEmailAddress());
+            hotel.setPassword(updateHotelRequest.getPassword());
+            hotelRepository.save(hotel);
+            return ServiceResponse.builder().status(Status.Success).build();
+        } else {
+            throw new UnprocessableEntity(NO_SUCH_HOTEL);
+        }
+    }
 }
 

@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @RestController
+
 public class TransactionController {
 
     @Autowired
@@ -24,37 +26,36 @@ public class TransactionController {
     @Autowired
     private HotelService hotelService;
 
-      @GetMapping("/transaction")
-      private List<TransactionResponse> getTransactions() {
-          return transactionService.getAllTransaction();
+    @GetMapping("/transaction")
+    private List<TransactionResponse> getTransactions() {
+        return transactionService.getAllTransaction();
 
-      }
+    }
 
 
-    @RequestMapping("/transaction/{id}")
-    public TransactionResponse getTransactionById(@PathVariable Long id) {
+    @GetMapping("/transaction/{id}")
+    public TransactionResponse getTransactionById(@PathVariable(name = "id") Long id) {
 
         return transactionService.getTransactionById(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/hotel/{hotelId}/transaction")
-    public ServiceResponse addTransaction(@RequestBody AddTransactionRequest addTransactionRequest, @PathVariable Long hotelId)
-    {
+    @PostMapping(value = "/hotel/{hotel-id}/transaction")
+    public ServiceResponse addTransaction(@RequestBody AddTransactionRequest addTransactionRequest, @PathVariable(name = "hotel-id") Long hotelId) {
 
-        return transactionService.addTransaction(addTransactionRequest,hotelId);
+        return transactionService.addTransaction(addTransactionRequest, hotelId);
     }
 
-    @RequestMapping("/hotel/{hotelId}/transaction")
-    public List<TransactionResponse> getAllTransactionsofhotel(@PathVariable Long hotelId) {
-        return transactionService.getAllTransactionsofhotel(hotelId);
+    @GetMapping("/hotel/{hotel-id}/transaction")
+    public List<TransactionResponse> getAllTransactionsofhotel(@PathVariable(name = "hotel-id") Long hotelId) {
+        return transactionService.getAllTransactionsByHotelId(hotelId);
     }
 
-    @GetMapping("/hotel/{hotelId}/dailytransaction")
-    public List<TransactionResponse> getAllByDatetimeBetween(@PathVariable Long hotelId,
-                                                     @RequestParam("start-date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                                     @RequestParam("end-date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+    @GetMapping("/hotel/{hotel-id}/daily-transaction")
+    public List<TransactionResponse> getAllByDatetimeBetween(@PathVariable(name = "hotel-id") Long hotelId,
+                                                             @RequestParam("start-date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                                             @RequestParam("end-date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
-        return transactionService.getdailytransaction(startDate, endDate, hotelId);
+        return transactionService.getDailyTransaction(startDate, endDate, hotelId);
     }
 
 
