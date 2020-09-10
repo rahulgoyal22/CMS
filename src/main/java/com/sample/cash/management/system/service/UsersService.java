@@ -36,7 +36,6 @@ public class UsersService {
     }
 
     public ServiceResponse addUsers(AddUserRequest addUserRequest) {
-        //Handle exception of non unique email address
         usersRepository.save(Users.builder().typeOfUser(addUserRequest.getTypeOfUser()).nameOfUser(addUserRequest.getNameOfUser()).email(addUserRequest.getEmail()).password(addUserRequest.getPassword()).build());
         return ServiceResponse.builder().status(Status.Success).build();
     }
