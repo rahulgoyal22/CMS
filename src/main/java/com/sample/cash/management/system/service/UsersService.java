@@ -65,4 +65,16 @@ public class UsersService {
             throw new UnprocessableEntity(NO_SUCH_USER);
         }
     }
+
+    public UserResponse authUser(String email, String password) {
+        UserResponse userResponse = new UserResponse() ;
+
+       Users user=usersRepository.findByEmailAndPassword(email,password);
+       if(user==null)
+       {
+           throw new UnprocessableEntity(NO_SUCH_USER);
+       }
+         userResponse = modelMapper.map(user, UserResponse.class);
+        return userResponse;
+    }
 }

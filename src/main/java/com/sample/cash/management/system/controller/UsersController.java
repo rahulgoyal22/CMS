@@ -37,4 +37,9 @@ public class UsersController {
     public ServiceResponse updateUser(@RequestBody AddUserRequest addUserRequest, @PathVariable(name = "id") Long id) {
         return usersService.updateUser(addUserRequest, id);
     }
+
+    @GetMapping(value="/auth-user")
+    public UserResponse authUser(@RequestParam("email-id") String email,@RequestParam("password")  String password){
+        return usersService.authUser(email,password);
+    }
 }

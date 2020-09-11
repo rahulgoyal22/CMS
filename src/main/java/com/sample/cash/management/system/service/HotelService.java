@@ -69,5 +69,15 @@ public class HotelService {
             throw new UnprocessableEntity(NO_SUCH_HOTEL);
         }
     }
+
+    public HotelResponse authHotel(String email, String password) {
+       Hotel hotel = hotelRepository.findByEmailAddressAndPassword(email,password);
+       if(hotel == null)
+       {
+           throw new UnprocessableEntity(NO_SUCH_HOTEL);
+       }
+       HotelResponse hotelResponse = modelMapper.map(hotel,HotelResponse.class);
+       return hotelResponse;
+    }
 }
 
