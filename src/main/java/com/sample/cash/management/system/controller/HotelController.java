@@ -44,5 +44,10 @@ public class HotelController {
         return hotelService.updateHotel(updateHotelRequest, id);
     }
 
+    @GetMapping(value = "/auth-hotel")
+    public HotelResponse authHotel(@RequestParam(name = "email") String email,@RequestParam(name = "password")  String password){
+        return hotelService.authHotel(email,password);
+    }
+
 
 }
