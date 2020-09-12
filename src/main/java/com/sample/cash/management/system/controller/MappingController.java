@@ -20,7 +20,7 @@ public class MappingController {
         return mappingService.getAllApprovers();
     }
 
-    @PostMapping(value = "")@ResponseBody
+    @PostMapping(value = "")
     public ServiceResponse addMapping(@RequestParam(name = "collector-id") Long collectorId, @RequestParam(name = "approver-id") Long approverId) {
         return mappingService.addMapping(collectorId, approverId);
     }
