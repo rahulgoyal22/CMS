@@ -10,6 +10,7 @@ import com.sample.cash.management.system.model.Request.AddTransactionRequest;
 import com.sample.cash.management.system.model.Response.HotelResponse;
 import com.sample.cash.management.system.model.Response.ServiceResponse;
 import com.sample.cash.management.system.model.Response.TransactionResponse;
+import com.sample.cash.management.system.model.Response.UserResponse;
 import com.sample.cash.management.system.repository.HotelRepository;
 import com.sample.cash.management.system.repository.TransactionRepository;
 import org.modelmapper.ModelMapper;
@@ -26,7 +27,7 @@ import static com.sample.cash.management.system.constant.Constants.NO_SUCH_TRANS
 @Service
 public class TransactionService {
 
-    private ModelMapper modelMapper= new ModelMapper();
+    private ModelMapper modelMapper = new ModelMapper();
     @Autowired
     private TransactionRepository transactionRepository;
     @Autowired
@@ -49,10 +50,10 @@ public class TransactionService {
         }
     }
 
-    public List<TransactionResponse> getAllTransaction(){
+    public List<TransactionResponse> getAllTransaction() {
         List<Transaction> transactions = transactionRepository.findAll();
-        List<TransactionResponse> transactionResponses= new ArrayList<>();
-        transactions.forEach(transaction ->{
+        List<TransactionResponse> transactionResponses = new ArrayList<>();
+        transactions.forEach(transaction -> {
             TransactionResponse mapping = new TransactionResponse();
             mapping.setTransaction(transaction.getTransaction());
             mapping.setAmount(transaction.getAmount());
@@ -66,41 +67,24 @@ public class TransactionService {
         Optional<Transaction> transaction = transactionRepository.findById(id);
         if (!transaction.isPresent()) {
             throw new UnprocessableEntity(NO_SUCH_TRANSACTION);
-        }
-        else {
-            TransactionResponse transactionResponse=modelMapper.map(transaction.get(),TransactionResponse.class);
+        } else {
+            TransactionResponse transactionResponse = modelMapper.map(transaction.get(), TransactionResponse.class);
             transactionResponse.setManagerId(transaction.get().getHotel().getManagerId());
             return transactionResponse;
         }
     }
 
 
-    public List<TransactionResponse> getDailyTransaction(LocalDate start, LocalDate end, Long id){
-        List<Transaction> transactions= transactionRepository.findAllByCreatedAtBetweenAndHotelId(start,end,id);
-        List<TransactionResponse> transactionResponses= new ArrayList<>();
-
-        transactions.forEach(transaction ->{
-            TransactionResponse mapping = new TransactionResponse();
-            mapping.setTransaction(transaction.getTransaction());
-            mapping.setAmount(transaction.getAmount());
-            mapping.setManagerId(transaction.getHotel().getManagerId());
-            transactionResponses.add(mapping);
-        });
+    public List<TransactionResponse> getDailyTransaction(LocalDate start, LocalDate end, Long id) {
+        List<Transaction> transactions = transactionRepository.findAllByCreatedAtBetweenAndHotelId(start, end, id);
+        List<TransactionResponse> transactionResponses = transactions.stream().map(transactions1 -> modelMapper.map(transactions1, TransactionResponse.class)).collect(Collectors.toList());
         return transactionResponses;
 
     }
 
-    public List<TransactionResponse> getAllTransactionsByHotelId(Long hotelId){
-        List<Transaction> transactions=transactionRepository.findAllByHotelId(hotelId);
-        List<TransactionResponse> transactionResponses= new ArrayList<>();
-
-        transactions.forEach(transaction ->{
-            TransactionResponse mapping = new TransactionResponse();
-            mapping.setTransaction(transaction.getTransaction());
-            mapping.setAmount(transaction.getAmount());
-            mapping.setManagerId(transaction.getHotel().getManagerId());
-            transactionResponses.add(mapping);
-        });
+    public List<TransactionResponse> getAllTransactionsByHotelId(Long hotelId) {
+        List<Transaction> transactions = transactionRepository.findAllByHotelId(hotelId);
+        List<TransactionResponse> transactionResponses = transactions.stream().map(transactions1 -> modelMapper.map(transactions1, TransactionResponse.class)).collect(Collectors.toList());
         return transactionResponses;
     }
 }
