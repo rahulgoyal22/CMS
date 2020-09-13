@@ -8,6 +8,7 @@
         $.get(url,function (data,status){
             window.console.log(data.id);
             window.localStorage.setItem("userId", data.id);
+            window.location.replace("http://localhost:8080/user.html");
         });
     });
 }());
