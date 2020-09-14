@@ -12,6 +12,7 @@ import com.sample.cash.management.system.model.Request.AddHotelRequest;
 import com.sample.cash.management.system.model.Request.UpdateHotelRequest;
 import com.sample.cash.management.system.model.Response.HotelResponse;
 import com.sample.cash.management.system.model.Response.ServiceResponse;
+import com.sample.cash.management.system.model.Response.UserResponse;
 import com.sample.cash.management.system.repository.TransactionRepository;
 import com.sample.cash.management.system.repository.UsersRepository;
 import lombok.var;
@@ -23,6 +24,7 @@ import com.sample.cash.management.system.entity.Hotel;
 import com.sample.cash.management.system.repository.HotelRepository;
 
 import static com.sample.cash.management.system.constant.Constants.NO_SUCH_HOTEL;
+import static com.sample.cash.management.system.constant.Constants.NO_SUCH_USER;
 
 @Service
 public class HotelService {
@@ -71,13 +73,18 @@ public class HotelService {
     }
 
     public HotelResponse authHotel(String email, String password) {
-       Hotel hotel = hotelRepository.findByEmailAddressAndPassword(email,password);
-       if(hotel == null)
-       {
-           throw new UnprocessableEntity(NO_SUCH_HOTEL);
-       }
-       HotelResponse hotelResponse = modelMapper.map(hotel,HotelResponse.class);
-       return hotelResponse;
+        HotelResponse hotelResponse = new HotelResponse();
+
+        Hotel hotel = hotelRepository.findByEmailAddress(email);
+        if (hotel == null) {
+            throw new UnprocessableEntity(NO_SUCH_HOTEL);
+
+        }
+        if (!password.equals(hotel.getPassword())) {
+            throw new UnprocessableEntity("Wrong password");
+        }
+        hotelResponse = modelMapper.map(hotel, HotelResponse.class);
+        return hotelResponse;
     }
 }
 

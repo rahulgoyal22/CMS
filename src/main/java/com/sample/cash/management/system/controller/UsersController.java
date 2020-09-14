@@ -38,8 +38,8 @@ public class UsersController {
         return usersService.updateUser(addUserRequest, id);
     }
 
-    @GetMapping(value="/auth-user")
-    public UserResponse authUser(@RequestParam("email-id") String email,@RequestParam("password")  String password){
-        return usersService.authUser(email,password);
+    @GetMapping(value = "/auth-user")
+    public UserResponse authUser(@RequestParam("email-id") String email, @RequestParam("password") String password) {
+        return usersService.authUser(email, password);
     }
 }
