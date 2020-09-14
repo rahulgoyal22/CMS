@@ -45,8 +45,8 @@ public class HotelController {
     }
 
     @GetMapping(value = "/auth-hotel")
-    public HotelResponse authHotel(@RequestParam(name = "email") String email,@RequestParam(name = "password")  String password){
-        return hotelService.authHotel(email,password);
+    public HotelResponse authHotel(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
+        return hotelService.authHotel(email, password);
     }
 
 

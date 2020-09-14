@@ -1,23 +1,51 @@
 /*globals $:false */
 
-(function() {
+(function () {
     "use strict";
-    $("#addhotel").on("click",function () {
-        var mydata ={managerId:$("#hotelName").val(),
-            collectorEmail:$("#collectorEmail").val(),
-            emailAddress:$("#Email").val(),
-            password:$("#Password").val(),
-            balance:0}
+    $("#addhotel").on("click", function () {
+        if ($("#hotelName").val().length < 1) {
+            window.alert("Enter Hotel Name");
+            return;
+        }
+        if ($("#collectorEmail").val().length < 1) {
+            window.alert("Enter Collector Email");
+            return;
+        }
+        if ($("#Email").val().length < 1) {
+            window.alert("Enter Hotel Email");
+            return;
+        }
+        if ($("#Password").val().length < 1) {
+            window.alert("Enter Password");
+            return;
+        }
+        if ($("#exampleRepeatPassword").val().length < 1) {
+            window.alert("Enter Password Again");
+            return;
+        }
+        if ($("#exampleRepeatPassword").val() != $("#Password").val()) {
+            window.alert("Repeat Password  doesn't match!");
+            return;
+        }
+        var mydata = {
+            managerId: $("#hotelName").val(),
+            collectorEmail: $("#collectorEmail").val(),
+            emailAddress: $("#Email").val(),
+            password: $("#Password").val(),
+            balance: 0
+        }
 
         jQuery.ajax({
-            url:"http://localhost:8080/hotels/" ,
+            url: "http://localhost:8080/hotels/",
             type: "POST",
-            data:JSON.stringify(mydata),
-            contentType:'application/json;charset=utf-8',
+            data: JSON.stringify(mydata),
+            contentType: 'application/json;charset=utf-8',
             dataType: "json",
-            success: function(result) {
+            success: function (result) {
                 //Write your code here
                 window.console.log(result);
+                window.alert("Hotel Added");
+                window.location.replace("http://localhost:8080/hotelLogin.html");
             }
         });
     });
