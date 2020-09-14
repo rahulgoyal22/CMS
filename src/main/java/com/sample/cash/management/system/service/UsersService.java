@@ -69,10 +69,14 @@ public class UsersService {
     public UserResponse authUser(String email, String password) {
         UserResponse userResponse = new UserResponse() ;
 
-       Users user=usersRepository.findByEmailAndPassword(email,password);
+       Users user=usersRepository.findByEmail(email);
        if(user==null)
        {
            throw new UnprocessableEntity(NO_SUCH_USER);
+
+       }
+       if(!password.equals(user.getPassword())){
+           throw new UnprocessableEntity("Wrong password");
        }
          userResponse = modelMapper.map(user, UserResponse.class);
         return userResponse;
