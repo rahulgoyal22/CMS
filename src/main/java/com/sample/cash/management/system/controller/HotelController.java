@@ -1,14 +1,17 @@
 package com.sample.cash.management.system.controller;
 
 import com.sample.cash.management.system.entity.Hotel;
+import com.sample.cash.management.system.enums.Status;
 import com.sample.cash.management.system.model.Request.AddHotelRequest;
 import com.sample.cash.management.system.model.Request.UpdateHotelRequest;
 import com.sample.cash.management.system.model.Response.HotelResponse;
 import com.sample.cash.management.system.model.Response.ServiceResponse;
 import com.sample.cash.management.system.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,9 +35,11 @@ public class HotelController {
         return hotelService.getHotel(id);
     }
 
-
     @PostMapping(value = "/")
-    public ServiceResponse addHotel(@RequestBody AddHotelRequest addHotelRequest) {
+    public ServiceResponse addHotel(@Valid @RequestBody AddHotelRequest addHotelRequest, Errors errors) {
+        if (errors.hasErrors()) {
+            return ServiceResponse.builder().status(Status.Failure).message(errors.getFieldError().getField() + " " + errors.getFieldError().getDefaultMessage()).build();
+        }
         return hotelService.addHotel(addHotelRequest);
     }
 
@@ -48,6 +53,5 @@ public class HotelController {
     public HotelResponse authHotel(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
         return hotelService.authHotel(email, password);
     }
-
 
 }
