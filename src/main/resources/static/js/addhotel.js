@@ -28,7 +28,7 @@
             return;
         }
         var mydata = {
-            managerId: $("#hotelName").val(),
+            hotelName: $("#hotelName").val(),
             collectorEmail: $("#collectorEmail").val(),
             emailAddress: $("#Email").val(),
             password: $("#Password").val(),
