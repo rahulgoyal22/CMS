@@ -26,37 +26,31 @@ public class TransactionController {
     @Autowired
     private HotelService hotelService;
 
-    @GetMapping("/transaction")
+    @GetMapping(value = "/transaction")
     private List<TransactionResponse> getTransactions() {
         return transactionService.getAllTransaction();
-
     }
 
-
-    @GetMapping("/transaction/{id}")
+    @GetMapping(value = "/transaction/{id}")
     public TransactionResponse getTransactionById(@PathVariable(name = "id") Long id) {
-
         return transactionService.getTransactionById(id);
     }
 
     @PostMapping(value = "/hotel/{hotel-id}/transaction")
     public ServiceResponse addTransaction(@RequestBody AddTransactionRequest addTransactionRequest, @PathVariable(name = "hotel-id") Long hotelId) {
-
         return transactionService.addTransaction(addTransactionRequest, hotelId);
     }
 
-    @GetMapping("/hotel/{hotel-id}/transaction")
+    @GetMapping(value = "/hotel/{hotel-id}/transaction")
     public List<TransactionResponse> getAllTransactionsofhotel(@PathVariable(name = "hotel-id") Long hotelId) {
         return transactionService.getAllTransactionsByHotelId(hotelId);
     }
 
-    @GetMapping("/hotel/{hotel-id}/daily-transaction")
+    @GetMapping(value = "/hotel/{hotel-id}/daily-transaction")
     public List<TransactionResponse> getAllByDatetimeBetween(@PathVariable(name = "hotel-id") Long hotelId,
                                                              @RequestParam("start-date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                                              @RequestParam("end-date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
         return transactionService.getDailyTransaction(startDate, endDate, hotelId);
     }
-
-
 }

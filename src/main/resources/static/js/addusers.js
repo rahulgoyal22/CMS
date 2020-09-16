@@ -15,8 +15,8 @@
             window.alert("Enter Email");
             return;
         }
-        if ($("#exampleInputPassword").val().length < 1) {
-            window.alert("Enter Password");
+        if ($("#exampleInputPassword").val().length < 8 || $("#exampleInputPassword").val().length > 14) {
+            window.alert("Password size must be between 8 and 14 ");
             return;
         }
         if ($("#exampleRepeatPassword").val().length < 1) {
@@ -42,6 +42,10 @@
             dataType: "json",
             success: function (result) {
                 //Write your code here
+                if(result.status=="Failure")
+                {
+                    return ;
+                }
                 window.console.log(result);
                 window.alert("Added User");
                 window.location.replace("http://localhost:8080/userLogin.html");

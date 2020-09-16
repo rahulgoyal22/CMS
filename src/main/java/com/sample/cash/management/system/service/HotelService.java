@@ -45,7 +45,7 @@ public class HotelService {
 
     public ServiceResponse addHotel(AddHotelRequest addHotelRequest) {
         Users collector = usersRepository.findByEmail(addHotelRequest.getCollectorEmail());
-        hotelRepository.save(Hotel.builder().managerId(addHotelRequest.getManagerId()).emailAddress(addHotelRequest.getEmailAddress()).user(collector).password(addHotelRequest.getPassword()).balance(addHotelRequest.getBalance()).build());
+        hotelRepository.save(Hotel.builder().managerId(addHotelRequest.getHotelName()).emailAddress(addHotelRequest.getEmailAddress()).user(collector).password(addHotelRequest.getPassword()).balance(addHotelRequest.getBalance()).build());
         return ServiceResponse.builder().status(Status.Success).build();
     }
 
@@ -78,7 +78,6 @@ public class HotelService {
         Hotel hotel = hotelRepository.findByEmailAddress(email);
         if (hotel == null) {
             throw new UnprocessableEntity(NO_SUCH_HOTEL);
-
         }
         if (!password.equals(hotel.getPassword())) {
             throw new UnprocessableEntity("Wrong password");

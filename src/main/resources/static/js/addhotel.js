@@ -15,12 +15,12 @@
             window.alert("Enter Hotel Email");
             return;
         }
-        if ($("#Password").val().length < 1) {
-            window.alert("Enter Password");
+        if ($("#Password").val().length < 8 || $("#Password").val().length > 14) {
+            window.alert("Password size must be between 8 and 14");
             return;
         }
-        if ($("#exampleRepeatPassword").val().length < 1) {
-            window.alert("Enter Password Again");
+        if ($("#exampleRepeatPassword").val().length <1) {
+            window.alert("Enter Repeat Password ");
             return;
         }
         if ($("#exampleRepeatPassword").val() != $("#Password").val()) {
@@ -44,6 +44,11 @@
             success: function (result) {
                 //Write your code here
                 window.console.log(result);
+                if(result.status=="Failure")
+                {
+                    // window.alert(result.message);
+                    return;
+                }
                 window.alert("Hotel Added");
                 window.location.replace("http://localhost:8080/hotelLogin.html");
             }
